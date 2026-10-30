@@ -77,5 +77,89 @@ action="failure"
 
 "Show me any IP address with at least five failed login attempts within a five-minute time bucket."
 
+index=main source="*authentication_logs_example.csv"
+| stats count(eval(action="failure")) as Failed
+        count(eval(action="success")) as Successful
+        by src_ip
+| sort - Failed
+
+198.51.100.77, which is associated with repeated failed logins and a later success in our simulated scenario.
+
+You should see a table with the IP addresses and how many failed and successful logins each has.
+
+stats groups evidence and eval allows you to count events meeting specific conditions.
+
+index=main source="*authentication_logs_example.csv"
+username="j.smith"
+| table _time username src_ip action device
+| sort _time
+
+FILTERS RESULTS TO ONE PERSON
+________________________________________________________________
+
+index=main source="*simulated_security_events.csv"
+| table _time username src_ip file_name action system
+| sort _time
+
+EVENT AFTER LOG IN 
+
+________________________________________________________________
+These events are coming from j.smith, and we see that 2 events are denied. transfer_review_2400000.xlsx
+
+_________________________________________________________________
+index=main
+(source="*authentication_logs_example.csv" OR source="*simulated_security_events.csv")
+src_ip="198.51.100.77"
+| eval event_type=if(
+    like(source,"%authentication_logs_example.csv"),
+    "Authentication",
+    "File Access"
+  )
+| eval details=if(
+    event_type="Authentication",
+    "Login: ".action,
+    "File: ".file_name." / ".action
+  )
+| table _time username src_ip event_type details
+| sort _time
+timeline combining login attempts and file-access records from the suspicious IP
+EVENT COORELATION  - skill 
+
+____________________________________________________________________________________
+
+Making Dashboard 
+timechart creates a chart using timestamps.
+span=5m groups activity into five-minute intervals.
+count by action separates successful and failed logins.
+
+
+_____________________________________________________________________________________
+SUSPICIOUS IP CHART
+
+index=main source="*authentication_logs_example.csv"
+action="failure"
+| stats count as Failed_Logins by src_ip
+| sort - Failed_Logins
+
+_____________________________________________________________________________________
+index=main source="*authentication_logs_example.csv"
+action="failure"
+| stats count as Failed_Logins by username
+| sort - Failed_Logins
+
+targeted employee chart
+______________________________________________________________________________________
+index=main
+(source="*authentication_logs_example.csv" OR source="*simulated_security_events.csv")
+src_ip="198.51.100.77"
+| eval Event_Type=if(like(source,"%authentication_logs_example.csv"),"Authentication","File Access")
+| eval Details=if(Event_Type="Authentication","Login: ".action,"File: ".file_name." / ".action)
+| table _time username src_ip Event_Type Details
+| sort _time
+
+INCIDENT TIMELINE
+
+_____________________________________________________________________________________
+
 
 
