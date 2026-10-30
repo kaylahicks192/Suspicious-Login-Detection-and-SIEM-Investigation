@@ -1,0 +1,6 @@
+timestamp,src_ip,username,file_name,action,system
+2026-10-29 01:40:00,192.0.2.10,alex.morgan,benefits_guide.pdf,allowed,DOCUMENT-PORTAL
+2026-10-29 02:14:09,198.51.100.77,j.smith,transfer_review_2400000.xlsx,denied,DOCUMENT-PORTAL
+2026-10-29 02:15:21,198.51.100.77,j.smith,transfer_review_2400000.xlsx,denied,DOCUMENT-PORTAL
+2026-10-29 02:16:03,198.51.100.77,j.smith,staff_directory.csv,allowed,DOCUMENT-PORTAL
+2026-10-29 03:10:00,192.0.2.12,taylor.lee,team_schedule.xlsx,allowed,DOCUMENT-PORTAL
