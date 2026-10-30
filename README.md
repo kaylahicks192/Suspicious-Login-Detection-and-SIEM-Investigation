@@ -18,5 +18,64 @@ In this project, I will
 - Sysmon
 - VirusTotal
 - MITRE ATTACK (ADVERSARY TECHNIQUE MAPPING)
-- Long database (Created with Artificial Intelligence)
+- Example database (Created with Claude)
+
+  ## QUICK INFORMATION
+  - index=main
+| stats count by source    allows users to determine what files they have uploaded.
+
+
+index=main source="simulated_security_events.csv"
+| stats count
+
+This command shows us the quantity of events.
+
+
+ACCOUNT INVESTIGATION
+index=main source="*authentication_logs_example.csv" username="j.smith"
+| table _time username src_ip action device
+| sort _time
+
+As we can see, we can only find one successful attempt from the IP address: 198.51.100.77
+This is very suspicious because there are 22 failed attempts, showing signs of a brute-force attack.
+
+Now, we are going to investigate the financial document. 
+index=main source="*simulated_security_events.csv"
+| table _time username src_ip file_name action system
+| sort _time
+
+transfer_review_2400000.xlsx has two copies, and they're both DENIED. DIGITAL EVIDENCE COORELATION, putting pieces together. 
+
+index=main
+(source="*authentication_logs_example.csv"
+OR source="*simulated_security_events.csv")
+src_ip="198.51.100.77"
+| eval event_type=if(
+    like(source,"%authentication_logs_example.csv"),
+    "Authentication",
+    "File Access"
+  )
+| eval details=if(
+    event_type="Authentication",
+    "Login: ".action,
+    "File: ".file_name." / ".action
+  )
+| table _time username src_ip event_type details
+| sort _time
+
+This makes a timeline. 
+
+We see the times of all events, and how so many events were declined. This points to a security incident, an account is showing signs of being compromised. 
+
+DETECTION RULE
+index=main source="*authentication_logs_example.csv"
+action="failure"
+| bin _time span=5m
+| stats count as failed_attempts by src_ip _time
+| where failed_attempts >= 5
+| sort - failed_attempts
+
+"Show me any IP address with at least five failed login attempts within a five-minute time bucket."
+
+
 
