@@ -172,4 +172,30 @@ What is MITRE ATT&CK? It is a knowledge base documenting techniques that real at
 
 connect suspicious security events to known attacker techniques
 
+___________________________________________________________________________________
+COLLECT Evidence 
+index=main source="*authentication_logs_example.csv"
+src_ip="203.0.113.45"
+action="failure"
+| stats count as Failed_Attempts
+        dc(username) as Unique_Accounts
+        values(username) as Targeted_Accounts
+        by src_ip
+
+index=main source="*authentication_logs_example.csv"
+src_ip="198.51.100.77"
+| stats count(eval(action="failure")) as Failed
+        count(eval(action="success")) as Successful
+        by username
+
+_____________________________________________________________________________________
+Valid Accounts investigation
+
+Technique	Evidence	Assessment
+T1110 — Brute Force	22 failures followed by success	Consistent with technique
+T1110.003 — Password Spraying	10 failures across 5 accounts	Possible spraying
+T1078 — Valid Accounts	Successful login and subsequent file activity	Possible account abuse, not confirmed
+
+EACH CODE REPRESENTS A DIFFERENT ATTACK. BE SURE TO LEARN THEM. 
+
 
