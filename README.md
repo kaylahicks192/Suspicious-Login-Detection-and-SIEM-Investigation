@@ -9,6 +9,7 @@ In this project, I will
 - Investigate a potential brute-force attack
 - Use Splunk to develop a dashboard
 - Develop incident response recommendations.
+- Use prior knowledge of rules and regulations to develop a plan to stop security events/incidents
 
 ## TOOLS
 - Splunk Enterprise
