@@ -18,4 +18,5 @@ In this project, I will
 - Sysmon
 - VirusTotal
 - MITRE ATTACK (ADVERSARY TECHNIQUE MAPPING)
+- Long database (Created with Artificial Intelligence)
 
