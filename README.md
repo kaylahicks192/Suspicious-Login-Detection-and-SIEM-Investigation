@@ -162,4 +162,14 @@ INCIDENT TIMELINE
 _____________________________________________________________________________________
 
 
+install Sysmon from Microsoft and investigate a harmless Notepad process using Event ID 1.
+
+Windows events and results from sysmon are from Home PC. They are considered separate activities to prove my proficiency in Sysmon and Windows Events.
+___________________________________________________________________________________
+LAST: MITRE ATT&CK MAPPING
+
+What is MITRE ATT&CK? It is a knowledge base documenting techniques that real attackers use against computer systems.
+
+connect suspicious security events to known attacker techniques
+
 
