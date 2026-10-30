@@ -1,0 +1,16 @@
+
+index=main
+(source="*authentication_logs_example.csv" OR source="*simulated_security_events.csv")
+src_ip="198.51.100.77"
+| eval Event_Type=if(
+    like(source,"%authentication_logs_example.csv"),
+    "Authentication",
+    "File Access"
+  )
+| eval Details=if(
+    Event_Type="Authentication",
+    "Login: ".action,
+    "File: ".file_name." / ".action
+  )
+| table _time username src_ip Event_Type Details
+| sort _time
